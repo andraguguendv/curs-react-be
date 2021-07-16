@@ -3,7 +3,6 @@ const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const colors = require('colors');
-const fileupload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
@@ -11,21 +10,20 @@ const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
 const cors = require('cors');
-/*const errorHandler = require('./middleware/error');*/
+const errorHandler = require('./middleware/error');
 const connectDB = require('./config/db');
 
 // Load env vars
-dotenv.config({ path: './config/config.env' });
+dotenv.config({path: './config/config.env'});
 
 // Connect to database
 connectDB();
 
 // Route files
-/*const houses = require('./routes/houses');
-const books = require('./routes/books');
+const departments = require('./routes/departments');
+const transactions = require('./routes/transactions');
 const auth = require('./routes/auth');
 const users = require('./routes/users');
-const reviews = require('./routes/reviews');*/
 
 const app = express();
 
@@ -41,7 +39,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // File uploading
-app.use(fileupload());
+/*app.use(fileupload());*/
 
 // Sanitize data
 app.use(mongoSanitize());
@@ -69,13 +67,12 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Mount routers
-/*app.use('/api/v1/houses', houses);
-app.use('/api/v1/books', books);
+app.use('/api/v1/departments', departments);
+app.use('/api/v1/transactions', transactions);
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/users', users);
-app.use('/api/v1/reviews', reviews);*/
 
-/*app.use(errorHandler);*/
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
