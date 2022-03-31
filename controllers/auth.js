@@ -29,7 +29,6 @@ exports.register = asyncHandler(async (req, res, next) => {
 // @access    Public
 exports.login = asyncHandler(async (req, res, next) => {
     const {email, password} = req.body;
-
     // Validate emil & password
     if (!email || !password) {
         return next(new ErrorResponse('Please provide an email and password', 400));
@@ -245,5 +244,6 @@ const sendTokenResponse = (user, statusCode, res) => {
     res.status(statusCode).cookie('token', token, options).json({
         success: true,
         token,
+        user
     });
 };
